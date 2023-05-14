@@ -24,12 +24,24 @@ class Event(db.Model):
 
     def __repr__(self): 
         return "<Name: {}>".format(self.name)
-
-
     
 
 
-    def _init_(self, name, image, description, date, time, location, category):
+class Comment(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key = True)
+    text = db.Column(db.String(400))
+    created_at = db.Column(db.DateTime, default = datetime.now())
+    #add foreign keys 
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
+
+    def __repr__(self):
+        return "<Comment: {}>".format(self.text)
+    
+
+
+    ##def _init_(self, name, image, description, date, time, location, category):
         self.name = name
         self.image = image
         self.description = description
@@ -40,7 +52,7 @@ class Event(db.Model):
         self.comments = list()
 
     
-    def set_comments(self, comment):
+   ## def set_comments(self, comment):
         self.comments.append(comment)
 
     
