@@ -33,9 +33,12 @@ class EventForm(FlaskForm):
   time = StringField('Event Time', validators=[InputRequired()])
   location = StringField('Event Location', validators=[InputRequired()])
   category = StringField('Event Category', validators=[InputRequired()])
-  submit = SubmitField("Create")
+  member = StringField('Number of Member Tickets', validators=[InputRequired()])
+  nonMember = StringField('Number of Non-Member Tickets', validators=[InputRequired()])
+  concession = StringField('Number of Concession Tickets', validators=[InputRequired()])
+  student = StringField('Number of Student Tickets', validators=[InputRequired()])
+  submit = SubmitField('Create')
 
-  
 #User comment
 class CommentForm(FlaskForm):
   text = TextAreaField('Comment', [InputRequired()])
