@@ -39,20 +39,3 @@ class Comment(db.Model):
     def __repr__(self):
         return "<Comment: {}>".format(self.text)
     
-
-
-    ##def _init_(self, name, image, description, date, time, location, category):
-        self.name = name
-        self.image = image
-        self.description = description
-        self.date = date 
-        self.time = time
-        self.location = location 
-        self.category = category 
-        self.comments = list()
-
-    
-   ## def set_comments(self, comment):
-        self.comments.append(comment)
-
-    
