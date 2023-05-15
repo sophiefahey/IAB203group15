@@ -5,12 +5,13 @@ from flask_wtf.file import FileRequired, FileField, FileAllowed
 
 ALLOWED_FILE = {'PNG', 'JPG', 'png', 'jpg'}
 
+#Create Login Form
 class LoginForm(FlaskForm):
     emailid=StringField("Email Address", validators=[InputRequired('Enter your Email Address')])
     password=PasswordField("Password", validators=[InputRequired('Enter your Password')])
     submit = SubmitField("Login")
 
- # this is the registration form
+ # Create registration form
 class RegisterForm(FlaskForm):
     FirstName=StringField("First Name", validators=[InputRequired()])
     LastName=StringField("Lirst Name", validators=[InputRequired()])    
