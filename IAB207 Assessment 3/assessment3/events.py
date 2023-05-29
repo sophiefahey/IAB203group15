@@ -28,7 +28,18 @@ def create():
     if form.validate_on_submit():
         #check and return image
         db_file_path = check_upload_file(form)
-        event = Event(name=form.name.data, image=form.image.data, description=form.description.data, date=form.date.data, time=form.time.data, location=form.location.data, category=form.category.data, member=form.member.data, nonMember=form.nonMember.data, concession=form.concession.data, student=form.student.data)
+        event = Event(
+            name=form.name.data, 
+            image=form.image.data, 
+            description=form.description.data, 
+            date=form.date.data, 
+            time=form.time.data, 
+            location=form.location.data, 
+            category=form.category.data, 
+            member=form.member.data, 
+            nonMember=form.nonMember.data, 
+            concession=form.concession.data, 
+            student=form.student.data)
         db.session.add(event)
         db.session.commit()
         flash('Successfully created new event', 'success')
