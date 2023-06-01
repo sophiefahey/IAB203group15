@@ -1,11 +1,12 @@
 from models import Cookuser
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, PasswordField, DateField, TimeField, SubmitField
+from wtforms import StringField, TextAreaField, PasswordField, DateField, TimeField, SubmitField, FileField
 from wtforms.validators import DataRequired, EqualTo
 
 # Event creation form
 class EventForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
+    image = FileField('Image')
     description = TextAreaField('Description', validators=[DataRequired()])
     date = DateField('Date', validators=[DataRequired()])
     time = TimeField('Time', validators=[DataRequired()])
