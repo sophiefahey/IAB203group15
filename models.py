@@ -13,6 +13,7 @@ class Cookuser(db.Model):
     userid = db.Column(db.String(32))
     username = db.Column(db.String(8))
 
+# DB setting for event creation
 class Event(db.Model):
     __tablename__ = 'events'
     id = db.Column(db.Integer, primary_key=True)
