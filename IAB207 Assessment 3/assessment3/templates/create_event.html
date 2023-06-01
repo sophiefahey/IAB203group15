@@ -1,100 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Event Management Website</title>
-        
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Event Management Website</title>
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-       <!-- Custom CSS -->
-       <link rel="stylesheet" href="{{ url_for('static', filename='/event_creation_update.css') }}">
-    </head>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='/event_creation_update.css') }}">
+</head>
 
-    <body>
-        <!-- Navigation Bar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container">
-                <a class="navbar-brand mr-auto btn btn-outline-primary" href="index_logged_in.html">COOK JOB</a>
-                <ul class="navbar-nav flex-row ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/events">Events</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/user_booking_history">History</a>
-                    </li>
-                    <!-- No register button if logged in -->
-                    {% if userid %}
-                    {% endif %}
-                    <!-- Login button if not logged in -->
-                    {% if not userid %}
-                    <a class="btn btn-primary ml-3" href="/login">Login </a>
-                    {% endif %}
-                    <!-- Show username with log out button if logged in -->
-                    {% if userid %}
-                    <a class="btn btn-outline-primary ml-3" href="/logout">{{ userid }} Logout</a>
-                    {% endif %}
-                </ul>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand mr-auto btn btn-outline-primary" href="index_logged_in.html">COOK JOB</a>
+        <ul class="navbar-nav flex-row ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/events">Events</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/user_booking_history">History</a>
+            </li>
+            <!-- No register button if logged in -->
+            {% if userid %}
+            {% endif %}
+            <!-- Login button if not logged in -->
+            {% if not userid %}
+            <a class="btn btn-primary ml-3" href="/login">Login </a>
+            {% endif %}
+            <!-- Show username with log out button if logged in -->
+            {% if userid %}
+            <a class="btn btn-outline-primary ml-3" href="/logout">{{ userid }} Logout</a>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+<!-- Jumbotron -->
+<div class="jumbotron jumbotron-with-bg-image">
+    <h1><b>Event Creation/Update Page</b></h1>
+    <p>- Please provide the details of your event: - </p>
+</div>
+
+<!-- Event details -->
+<div class="container">
+    <form method="POST" action="/create_event" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        <div class="form-group">
+            <label for="event-title">Title:</label>
+            {{ form.title(class="form-control", id="event-title") }}
+        </div>
+        <div class="form-group">
+            <label for="image">Event Image</label>
+            {% if event and event.image %}
+                <img class="card-img-top" src="{{ event.image }}" alt="Event Image">
+                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+            {% else %}
+                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="event-description">Description:</label>
+            {{ form.description(class="form-control", id="event-description") }}
+        </div>
+        <div class="form-group">
+            <label for="event-date">Date:</label>
+            {{ form.date(class="form-control", id="event-date") }}
+        </div>
+        <div class="form-group">
+            <label for="event-time">Time:</label>
+            {{ form.time(class="form-control", id="event-time") }}
+        </div>
+        <div class="form-group">
+            <label for="event-location">Location:</label>
+            {{ form.location(class="form-control", id="event-location") }}
+        </div>
+
+        <!-- Create Event Button -->
+        <div class="row mt-3 mb-5">
+            <div class="col-md-12 text-center">
+                {{ form.submit(class="btn btn-primary") }}
             </div>
-        </nav>
-
-        <!-- Jumbotron -->
-        <div class="jumbotron jumbotron-with-bg-image">
-            <h1><b>Event Creation/Update Page</b></h1>
-            <p>- Please provide the details of your event: - </p>
         </div>
+    </form>
+</div>
 
-        <!-- Event details -->
-        <div class="container">
-            <form method="POST" action="/create_event">
-                {{ form.csrf_token }}
+<!-- Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
 
-                <div class="form-group">
-                    <label for="event-title">Title:</label>
-                    {{ form.title(class="form-control", id="event-title") }}
-                </div>
-                <div class="form-group">
-                    <label for="event-description">Description:</label>
-                    {{ form.description(class="form-control", id="event-description") }}
-                </div>
-                <div class="form-group">
-                    <label for="event-date">Date:</label>
-                    {{ form.date(class="form-control", id="event-date") }}
-                </div>
-                <div class="form-group">
-                    <label for="event-time">Time:</label>
-                    {{ form.time(class="form-control", id="event-time") }}
-                </div>                
-                <div class="form-group">
-                    <label for="event-location">Location:</label>
-                    {{ form.location(class="form-control", id="event-location") }}
-                </div>
-
-                <!-- Create Event Button -->
-                <div class="row mt-3 mb-5">
-                    <div class="col-md-12 text-center">
-                        {{ form.submit(class="btn btn-primary") }}
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <!-- Bootstrap JS -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    </body>
-
-    <!-- Footer -->
-    <footer class="py-4 bg-dark text-white">
-        <div class="container text-center">
-            <p>
-                © 2023. Event Management Website.
-                <br> All rights reserved.
-            </p>
-        </div>
-    </footer>
+<!-- Footer -->
+<footer class="py-4 bg-dark text-white">
+    <div class="container text-center">
+        <p>
+            © 2023. Event Management Website.
+            <br> All rights reserved.
+        </p>
+    </div>
+</footer>
 
 </html>
