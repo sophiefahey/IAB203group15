@@ -9,11 +9,13 @@ from forms import RegisterForm, LoginForm, EventForm, CommentForm
 from datetime import datetime, time, date
 from models import db
 from models import Cookuser, Event, Comment
-app = Flask(__name__)
 from flask_bootstrap import Bootstrap
 
-
-
+app = Flask(__name__)
+# Set the upload folder!!!
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
+# Specify the allowed extensions for file uploads
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 
 # Each event details
 @app.route('/event_details/<int:event_id>', methods=['GET', 'POST'])
@@ -25,9 +27,6 @@ def event_details(event_id):
     else:
         # Handle event not found case
         return render_template('error.html', message='Event not found')
-
-    
-
 
 # User_booking_history
 @app.route('/user_booking_history', methods=['GET', 'POST'])
@@ -71,11 +70,6 @@ def create_event():
         return redirect('/events/')
     return render_template('create_event.html', form=form, userid=userid)
 
-
-
-
-
-
 @app.route('/event_details/<event_id>/update', methods=['GET', 'POST'])
 def edit(event_id):
     event = Event.query.get_or_404(event_id)
@@ -116,23 +110,12 @@ def edit(event_id):
 
     return render_template('event_creation_update.html', event=event)
 
-
-
-
-
 @app.route('/event_details/<event_id>/delete', methods=['GET', 'POST'])
 def delete(event_id):
     events = Event.query.get_or_404(event_id)
     db.session.delete(events)
     db.session.commit()
     return redirect('/events/')
-
-   
-
-
-
-
-
 
 #Events
 @app.route('/events/')

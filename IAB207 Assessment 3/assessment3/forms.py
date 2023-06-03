@@ -3,7 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, PasswordField, DateField, TimeField, SubmitField, FileField
 from wtforms.validators import DataRequired, EqualTo
 
-# Event creation form
+# Event creation formSSS
 class EventForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     image = FileField('Image')
