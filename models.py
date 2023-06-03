@@ -7,6 +7,9 @@ db = SQLAlchemy()
 class Cookuser(db.Model):
     __tablename__ = 'cookuser'
     id = db.Column(db.Integer, primary_key=True)
+    address = db.Column(db.String(80))
+    phonenumber = db.Column(db.String(12))
+    email= db.Column(db.String(40))
     password = db.Column(db.String(64))
     userid = db.Column(db.String(32))
     username = db.Column(db.String(8))
