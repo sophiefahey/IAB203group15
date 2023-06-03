@@ -189,7 +189,6 @@ def search():
         if query_res == "IT" or query_res == "Engineering" or query_res == "Arts" or query_res == "Education" or query_res == "Business":
             events = Event.query.filter(Event.category==query_res)
             
-            
         else:
             events = Event.query.filter(Event.title==query_res)
             
