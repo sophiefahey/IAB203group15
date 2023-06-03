@@ -35,6 +35,9 @@ class CommentForm(FlaskForm):
 class RegisterForm(FlaskForm):
     userid = StringField('userid', validators=[DataRequired()])
     username = StringField('username', validators=[DataRequired()])
+    email = StringField('email', validators=[DataRequired()])
+    phonenumber = StringField('phone number', validators=[DataRequired()])
+    address = StringField('address', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired(), EqualTo('re_password')])
     re_password = PasswordField('re_password', validators=[DataRequired()])
 
