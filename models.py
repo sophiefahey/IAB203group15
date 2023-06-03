@@ -1,9 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from datetime import datetime
 
 db = SQLAlchemy()
-migrate = Migrate()
 
 # DB setting for app user
 class Cookuser(db.Model):
@@ -13,25 +11,37 @@ class Cookuser(db.Model):
     userid = db.Column(db.String(32))
     username = db.Column(db.String(8))
 
-# DB setting for event creation
+# DB for event creation
 class Event(db.Model):
     __tablename__ = 'events'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)   
+    user_id = db.Column(db.String(100), nullable=False)
+    title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    date = db.Column(db.Date)  # Change the column type to Date
+    date = db.Column(db.DateTime, nullable=False)
     time = db.Column(db.Time, nullable=False)
-    location = db.Column(db.String(100), nullable=False)
+    address = db.Column(db.String(100), nullable=False)
+    states = db.Column(db.String(100), nullable=False)
     image = db.Column(db.String(255))  # Use URLType to store the image URL
+    postgraduate = db.Column(db.Integer, nullable=False)
+    student = db.Column(db.Integer, nullable=False)
+    concession = db.Column(db.Integer, nullable=False)
+    category = db.Column(db.String(100), nullable=False)
+    status = db.Column(db.String(100), nullable=False)
+
+    #cookuser_id = db.Column(db.Integer, db.ForeignKey('cookuser.id'))
 
     def __repr__(self):
         return f"Event(id={self.id}, title='{self.title}', date='{self.date}')"
 
-    @property
-    def formatted_date(self):
-        if isinstance(self.date, str) and len(self.date) == 4:
-            # Handle the string format 'YYYY' instead of 'YYYY-MM-DD'
-            formatted_date = datetime.strptime(self.date, '%Y').strftime("%B %d, %Y")
-        else:
-            formatted_date = self.date.strftime("%B %d, %Y")
-        return formatted_date
+class Comment(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(400))
+    created_at = db.Column(db.DateTime, default=datetime.now())
+    #add the foreign keys
+    user_id = db.Column(db.Integer, db.ForeignKey('cookuser.id'))
+    event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
+
+    def __repr__(self):
+        return "<Comment: {}>".format(self.text)

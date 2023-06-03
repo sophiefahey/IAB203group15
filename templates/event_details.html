@@ -1,78 +1,192 @@
+{% from 'bootstrap5/form.html' import render_form %}
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Event Management Website</title>
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='/css/event_details.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Event Management Website</title>
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='/index.css') }}">
 </head>
 
 <body>
-  <!-- Navigation Bar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand mr-auto btn btn-outline-primary" href="/">COOK JOB</a>
+            <ul class="navbar-nav flex-row ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/events">Events</a>
+                </li>
+                <!-- History button if logged in -->
+                {% if userid %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/user_booking_history">History</a>
+                </li>
+                {% endif %}
+                <!-- Register button if not logged in -->
+                {% if not userid %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary ml-3" href="/register">Register </a>
+                </li>
+                {% endif %}
+                <!-- No register button if logged in -->
+                {% if userid %}
+                {% endif %}
+                <!-- Login button if not logged in -->
+                {% if not userid %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary ml-3" href="/login">Login</a>
+                </li>
+                {% endif %}
+                <!-- Show username with log out button if logged in -->
+                {% if userid %}
+                <a class="btn btn-outline-primary ml-3" href="/logout">{{ userid }} Logout</a>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Jumbotron -->
+    <div class="jumbotron center">
+        <h2 class="statuspara" id="{{ event.status }}"><b>{{ event.status }}</b></h2>
+        <h1 class="display-4"> <b> {{ event.title }} </b></h1>
+
+        <br>
+        {% if event.image %}
+        <img class="card-img-top" src="{{ url_for('static', filename=event.image) }}" alt="Event Image">
+        {% else %}
+        <img class="card-img-top" src="{{ url_for('static', filename='uploads/default_image.png') }}"
+            alt="Default Image">
+        {% endif %}
+        <!-- NEED TO DO IMAGE -->
+        <br>
+        <br>
+        <p class="lead"><b>Event Category:</b> {{ event.category }}</p>
+        <p class="lead"><b>Description:</b></p>
+        <p class="my-3">{{ event.description }}</p>
+        <hr class="my-5">
+        <p>Date: {{ event.date.strftime("%d-%m-%y") }}</p>
+        <p>Time: {{ event.time}}</p>
+        <p>Address: {{ event.address }}, {{ event.states }}</p>
+
+    </div>
     <div class="container">
-      <a class="navbar-brand mr-auto btn btn-outline-primary" href="/">COOK JOB</a>
-      <ul class="navbar-nav flex-row ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="/events">Events</a>
-        </li>
-        <!-- History button if user logged in -->
-        {% if userid %}
-        <li class="nav-item">
-            <a class="nav-link" href="/user_booking_history">History</a>
-        </li>
-        {% endif %}
-        <!-- No register button if logged in -->
-        {% if userid %} {% endif %}
-        <!-- Login button if not logged in -->
-        {% if not userid %}
-        <a class="btn btn-primary ml-3" href="/login/">Login </a>
-        {% endif %}
-        <!-- Show username with log out button if logged in -->
-        {% if userid %}
-        <a class="btn btn-outline-primary ml-3" href="/logout">{{ userid }} Logout</a>
-        {% endif %}
-      </ul>
-    </div>
-  </nav>
-  <!-- Jumbotron -->
-  <!-- Event Details -->
-  <div class="jumbotron jumbotron-with-bg-image">
-    <h1><b>{{ event.title }}</b></h1>
-    <div class="card mb-4 box-shadow">
-      {% if event.image %}
-      <img class="card-img-top" src="{{ url_for('static', filename=event.image) }}" alt="Event Image">
-      {% else %}
-      <img class="card-img-top" src="{{ url_for('static', filename='uploads/default_image.png') }}" alt="Default Image">
-      {% endif %}
-      <div class="card-body">
-        <p class="card-text">Date: {{ event.formatted_date }}</p>
-        <p class="card-text">Time: {{ event.time.strftime("%H:%M") }}</p> <!-- Display the time -->
-        <p class="card-text">Location: {{ event.location }}</p>
-        <p class="card-text">Description: {{ event.description }}</p>
-      </div>  
-    </div>
-  </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Book Now</h2>
+                {% if not userid or event.status == "Cancelled" %}
+                <p>Please Login to Book Event
+                <p>
+                    {% endif %}
+                    <br>
+                    {% if userid and not event.status == "Cancelled"%}
 
-  <!-- Bootstrap JS -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+                    <br>
+                <form>
+                    <div class="form-group">
+                        <h3>Post Graduate Ticket</h3>
+                        <label for="ticket-type">Post Graduate Tickets Remaining: {{event.postgraduate}}</label>
+                        <div class="form-group">
+                            <label for="ticket-quantity">Quantity</label>
+                            <input type="number" class="form-control" id="ticket-quantity" value="1">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Book Now</button>
+                    </div>
+                    <div class="form-group">
+                        <h3>Student Ticket</h3>
+                        <label for="ticket-type">Student Tickets Remaining: {{event.student}}</label>
+                        <div class="form-group">
+                            <label for="ticket-quantity">Quantity</label>
+                            <input type="number" class="form-control" id="ticket-quantity" value="1">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Book Now</button>
+                    </div>
+                </form>
+                <br>
+                <form>
+                    <div class="form-group">
+                        <h3>Concession Ticket</h3>
+                        <label for="ticket-type">Concession Tickets Remaining: {{event.concession}}</label>
+                        <div class="form-group">
+                            <label for="ticket-quantity">Quantity</label>
+                            <input type="number" class="form-control" id="ticket-quantity" value="1">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Book Now</button>
+                </form>
+                {% endif %}
+            </div>
+
+
+            <!-- Comments -->
+
+            <div class="col-md-6">
+                <h2>Comments</h2>
+                {% if not userid or event.status == "Cancelled" %}
+                <p>Please Login to Leave a Comment
+                <p>
+                    {% endif %}
+                    <br>
+                    {% if userid and not event.status == "Cancelled"%}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Durian Lover</h5>
+                        <p class="card-text">This event was amazing last year! I had a great time and would definitely
+                            recommend it to others.</p>
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Sam Smith</h5>
+                        <p class="card-text">I thought the event was okay, but the time was too short.</p>
+                    </div>
+                </div>
+                <form>
+                    <div class="form-group">
+                        <label for="comment">Leave a Comment:</label>
+                        <textarea class="form-control" id="comment" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary row mt-3 mb-5 float-right">Submit</button>
+                </form>
+                {% endif %}
+            </div>
+            <br>
+            <br>
+
+
 </body>
-
 <!-- Footer -->
 <footer class="py-4 bg-dark text-white">
-  <div class="container text-center">
-    <p>
-      © 2023. Event Management Website.
-      <br> All rights reserved.
-    </p>
-  </div>
+    <div class="container text-center">
+        <p>
+            © 2023. Event Management Website.
+            <br> All rights reserved.
+        </p>
+    </div>
 </footer>
 
 </html>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-LT7Tj0PJwUvH1WJhjcNG+HzMZrW8rA9z/SGx5lr/19Zp/rW8BXY/bFg25/nwNvCm"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.esm.min.js"
+    integrity="sha384-zsA6hEdoJyKx+1L83HQchJElb8g2CY0yvHrl4e4vcJdKr/xLwdXcZ0bpeSfDbtRm"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
+    integrity="sha384-9bTVui1ef+hHcPOiO4MQY+PzM7Cckw83Nv7TtmTJN9Xkgb1gN6c4ZlCykrY4s+7G"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/js/dist/dropdown"
+    integrity="sha384-7r5EZ5c8Kr7WbL/DyqxVR2k0z/BrBjSTW9ae/qZUdN6bNfe6+zL/ZwT1vCjGOSaT"
+    crossorigin="anonymous"></script>

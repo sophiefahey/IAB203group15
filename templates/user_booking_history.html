@@ -17,21 +17,39 @@
 </head>
 
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand mr-auto btn btn-outline-primary" href="/">COOK JOB</a>
-            <ul class="navbar-nav flex-row ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/events">Events</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="user_booking_history.html">History</a>
-                </li>
-            </ul>
-            <button class="btn btn-outline-primary ml-3">Account</button>
-        </div>
-    </nav>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand mr-auto btn btn-outline-primary" href="/">COOK JOB</a>
+        <ul class="navbar-nav flex-row ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/events">Events</a>
+            </li>
+            <!-- History button if logged in -->
+            {% if userid %}
+            <li class="nav-item">
+                <a class="nav-link" href="/user_booking_history">History</a>
+            </li>
+            {% endif %}
+            <!-- Register button if not logged in -->
+            {% if not userid %}
+            <li class="nav-item">
+                <a class="btn btn-outline-primary ml-3" href="/register">Register </a>
+            </li>
+            {% endif %}
+            <!-- Login button if not logged in -->
+            {% if not userid %}
+            <li class="nav-item">
+                <a class="btn btn-outline-primary ml-3" href="/login">Login</a>
+            </li>
+            {% endif %}
+            <!-- Show username with log out button if logged in -->
+            {% if userid %}
+            <a class="btn btn-outline-primary ml-3" href="/logout">{{ userid }} Logout</a>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
     <!-- Jumbotron -->
     <div class="jumbotron-with-bg-image">
         <h1><b>User's Booking History</b></h1>

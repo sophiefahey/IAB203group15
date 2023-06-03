@@ -1,6 +1,6 @@
-from models import Cookuser
+from models import Cookuser, Event
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, PasswordField, DateField, TimeField, SubmitField, FileField
+from wtforms import SelectField, FileField, StringField, TextAreaField, PasswordField, DateField, TimeField, SubmitField, IntegerField
 from wtforms.validators import DataRequired, EqualTo
 
 # Event creation form
@@ -10,13 +10,26 @@ class EventForm(FlaskForm):
     description = TextAreaField('Description', validators=[DataRequired()])
     date = DateField('Date', validators=[DataRequired()])
     time = TimeField('Time', validators=[DataRequired()])
-    location = StringField('Location', validators=[DataRequired()])
+    address = StringField('Location', validators=[DataRequired()]) 
+    postgraduate = IntegerField('Postgraduate',validators=[DataRequired()])
+    student =  IntegerField('Student',validators=[DataRequired()])
+    concession = IntegerField('Concession',validators=[DataRequired()])
     submit = SubmitField('Create Event')
+    dropdown_list = ['IT', 'Nursing', 'Engineering', 'Arts', 'Education', 'Business'] 
+    category = SelectField('Category', choices=dropdown_list, default=1)
+    status_list = ['Open', 'SoldOut', 'Inactive', 'Cancelled'] 
+    status = SelectField('Status', choices=status_list, default=1)
+    states_list = ['NSW', 'NT', 'QLD', 'SA', 'TA', 'VIC', 'WA']
+    states = SelectField('State', choices=states_list, default=1)
+
+
 
 # Comment form
 class CommentForm(FlaskForm):
-    userid = StringField('userid', validators=[DataRequired()])
-    comment = TextAreaField('Comment', validators=[DataRequired()])
+    id = StringField('userid', validators=[DataRequired()])
+    title = TextAreaField('comment', validators=[DataRequired()])
+    created_at = DateField ('created_at', validators=[DataRequired()])
+
 
 # Register form
 class RegisterForm(FlaskForm):
