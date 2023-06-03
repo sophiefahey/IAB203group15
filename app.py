@@ -114,7 +114,7 @@ def edit(event_id):
 
         return redirect(url_for('events'))
 
-    return render_template('event_Creation_update.html', event=event)
+    return render_template('event_creation_update.html', event=event)
 
 
 
