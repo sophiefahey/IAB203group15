@@ -19,3 +19,26 @@ img {
     width: 30%;
     margin-bottom: 2rem;
 }
+
+.center {
+    text-align: center !important;
+}
+
+#Open {
+    background-color: rgb(194, 255, 198);
+}
+
+#SoldOut {
+    background-color: rgb(255, 227, 227);
+}
+
+#Inactive {
+    background-color: rgb(255, 227, 198);
+}
+#Cancelled {
+    background-color: rgb(124, 124, 124);
+}
+
+.view{
+    margin:20px !important;
+}

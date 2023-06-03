@@ -43,18 +43,40 @@
     margin-right: 5px;
 }
 
-#cancel {
-    background-color: rgb(195, 195, 195);
-}
 
-#open {
+
+#Open {
     background-color: rgb(194, 255, 198);
 }
 
-#sold {
+#SoldOut {
     background-color: rgb(255, 227, 227);
 }
 
-#past {
+#Inactive {
     background-color: rgb(255, 227, 198);
+}
+#Cancelled {
+    background-color: rgb(124, 124, 124);
+}
+
+.center {
+    text-align: center !important;
+}
+
+.pad {
+    padding-bottom: 40px;
+    padding-top: 40px;
+    outline-color: black;
+}
+
+.statuspara {
+    padding-bottom: 15px;
+    padding-top: 15px;
+    margin-left: 150px;
+    margin-right: 150px;
+}
+
+.homepad {
+    padding-bottom: 40px;
 }

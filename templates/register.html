@@ -1,13 +1,53 @@
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='/style.css') }}">
 </head>
 
 <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand mr-auto btn btn-outline-primary" href="/">COOK JOB</a>
+            <ul class="navbar-nav flex-row ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/events">Events</a>
+                </li>
+                <!-- History button if logged in -->
+                {% if userid %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/user_booking_history">History</a>
+                </li>
+                {% endif %}
+                <!-- Register button if not logged in -->
+                {% if not userid %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary ml-3" href="/register">Register </a>
+                </li>
+                {% endif %}
+                <!-- No register button if logged in -->
+                {% if userid %}
+                {% endif %}
+                <!-- Login button if not logged in -->
+                {% if not userid %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary ml-3" href="/login">Login</a>
+                </li>
+                {% endif %}
+                <!-- Show username with log out button if logged in -->
+                {% if userid %}
+                <a class="btn btn-outline-primary ml-3" href="/logout">{{ userid }} Logout</a>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
     <div class="container">
         <div class="row mt-5">
             <h1>Register</h1>
@@ -25,9 +65,21 @@
                         {{ form.username.label("Username") }}
                         {{ form.username(class="form-control", placeholder="Username") }}
                     </div>
+                      <div class="form-group">
+                        {{ form.username.label("Email") }}
+                        {{ form.username(class="form-control", placeholder="Email") }}
+                    </div>
                     <div class="form-group">
-                        {{ form.password.label('Password') }}  
-                        {{ form.password(class="form-control", placeholder="Password") }}      
+                        {{ form.userid.label('Phone Number') }}
+                        {{ form.userid(class="form-control", placeholder="PhoneNumber")}}
+                    </div>
+                    <div class="form-group">
+                        {{ form.userid.label('Address') }}
+                        {{ form.userid(class="form-control", placeholder="Address")}}
+                    </div>
+                    <div class="form-group">
+                        {{ form.password.label('Password') }}
+                        {{ form.password(class="form-control", placeholder="Password") }}
                     </div>
                     <div class="form-group">
                         {{ form.re_password.label('Re-Password') }}
@@ -41,4 +93,5 @@
         </div>
     </div>
 </body>
+
 </html>
