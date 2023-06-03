@@ -216,7 +216,7 @@ if __name__ == '__main__':
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = 'rlacksdncjswoqkqhdkslek'
     app.config['SESSION_COOKIE_DOMAIN']= False
-    SERVER_NAME = 'local.docker:8000'
+    
 
     # CSRF setting
     csrf = CSRFProtect()
