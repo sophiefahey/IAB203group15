@@ -62,9 +62,9 @@
 
     <br>
     {% if event.image %}
-    <img class="card-img-top" src="{{ url_for('static', filename=event.image) }}" alt="Event Image">
+    <img class="card-img-top" style="width:600px;" src="{{ url_for('static', filename=event.image) }}" alt="Event Image">
     {% else %}
-    <img class="card-img-top" src="{{ url_for('static', filename='uploads/default_image.png') }}" alt="Default Image">
+    <img class="card-img-top" style="width:600px;" src="{{ url_for('static', filename='uploads/default_image.png') }}" alt="Default Image">
     {% endif %}
     <!-- NEED TO DO IMAGE -->
     <br>
