@@ -101,7 +101,6 @@ def edit(event_id):
         event.status = status
         event.date = datetime.combine(date.fromisoformat(event.date_str), time.fromisoformat(event.time_str)) 
         event.time = time.fromisoformat(event.time_str)
-    
 
         db.session.add(event)
         db.session.commit()
