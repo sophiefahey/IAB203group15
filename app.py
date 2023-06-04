@@ -179,6 +179,22 @@ def search():
             return render_template('index.html', events=events, userid=userid)
         return render_template('index.html', events=events, userid=userid)
   
+
+#search bar for event details
+@app.route('/event_details/search',methods=['GET'])
+def event_search():
+        userid = session.get('userid', None)
+        query_res = request.args['search']
+        
+        if query_res == "IT" or query_res == "Engineering" or query_res == "Arts" or query_res == "Education" or query_res == "Business":
+            events = Event.query.filter(Event.category==query_res)
+            
+        else:
+            events = Event.query.filter(Event.title==query_res)
+            
+
+            return render_template('events.html', events=events, userid=userid)
+        return render_template('events.html', events=events, userid=userid)
     
 # Defualt link to index
 @app.route('/', methods=['GET'])
