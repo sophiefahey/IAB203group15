@@ -22,8 +22,6 @@ class EventForm(FlaskForm):
     states_list = ['NSW', 'NT', 'QLD', 'SA', 'TA', 'VIC', 'WA']
     states = SelectField('State', choices=states_list, default=1)
 
-
-
 # Comment form
 class CommentForm(FlaskForm):
     id = StringField('userid', validators=[DataRequired()])
