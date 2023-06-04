@@ -40,11 +40,11 @@ class Event(db.Model):
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(400))
+    text = db.Column(db.String(500))
     created_at = db.Column(db.DateTime, default=datetime.now())
     #add the foreign keys
     user_id = db.Column(db.Integer, db.ForeignKey('cookuser.id'))
-    event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
 
     def __repr__(self):
         return "<Comment: {}>".format(self.text)

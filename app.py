@@ -27,6 +27,19 @@ def event_details(event_id):
     else:
         # Handle event not found case
         return render_template('error.html', message='Event not found')
+    
+@app.route('/event/<event_id>/comment', methods=['POST'])
+def add_comment(event_id):
+    # Get the comment data from the form
+    comment = request.form.get('comment')
+    
+    # Add your logic to process the comment, e.g., store it in a database
+    
+    # Retrieve the event with the updated comment
+    event = Event.query.get(event_id)  # Retrieve the event from the database using the event_id
+    
+    # Render the event details template with the updated event data
+    return render_template('event_details.html', event=event)
 
 # User_booking_history
 @app.route('/user_booking_history', methods=['GET', 'POST'])
@@ -87,7 +100,7 @@ def edit(event_id):
         category = request.form['category']
         status = request.form['status']
         
-          # Combine date and time
+        # Combine date and time
         event.title = title
         event.description = description
         event.date_str = date_str
