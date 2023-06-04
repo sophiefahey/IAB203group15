@@ -1,6 +1,6 @@
 from models import Cookuser, Event
 from flask_wtf import FlaskForm
-from wtforms import SelectField, FileField, StringField, TextAreaField, PasswordField, DateField, TimeField, SubmitField, IntegerField
+from wtforms import SelectField, FileField, StringField, TextAreaField, PasswordField, DateField, TimeField, SubmitField, IntegerField, EmailField
 from wtforms.validators import DataRequired, EqualTo
 
 # Event creation formSSS
@@ -35,7 +35,7 @@ class CommentForm(FlaskForm):
 class RegisterForm(FlaskForm):
     userid = StringField('userid', validators=[DataRequired()])
     username = StringField('username', validators=[DataRequired()])
-    email = StringField('email', validators=[DataRequired()])
+    email = EmailField('email', validators=[DataRequired()])
     phonenumber = StringField('phone number', validators=[DataRequired()])
     address = StringField('address', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired(), EqualTo('re_password')])
