@@ -10,6 +10,8 @@ from datetime import datetime, time, date
 from models import db
 from models import Cookuser, Event, Comment, Booking
 from flask_bootstrap import Bootstrap
+import random
+
 
 app = Flask(__name__)
 # Set the upload folder!!!
