@@ -66,16 +66,20 @@
   {% endif %}
   {% endwith %}
   <br>
+
   <!-- Jumbotron -->
   <div class="jumbotron center">
     <h2 class="statuspara" id="{{ event.status }}"><b>{{ event.status }}</b></h2>
     <h1 class="display-4"> <b> {{ event.title }} </b></h1>
 
+
     <br>
     {% if event.image %}
-    <img class="card-img-top" style="width:600px;" src="{{ url_for('static', filename=event.image) }}" alt="Event Image">
+    <img class="card-img-top" style="width:600px;" src="{{ url_for('static', filename=event.image) }}"
+      alt="Event Image">
     {% else %}
-    <img class="card-img-top" style="width:600px;" src="{{ url_for('static', filename='uploads/default_image.png') }}" alt="Default Image">
+    <img class="card-img-top" style="width:600px;" src="{{ url_for('static', filename='uploads/default_image.png') }}"
+      alt="Default Image">
     {% endif %}
     <!-- NEED TO DO IMAGE -->
     <br>
@@ -90,59 +94,30 @@
 
   </div>
   <div class="container">
+
     <div class="row">
       <div class="col-md-6">
         <h2>Book Now</h2>
-        {% if not userid %}
-        <p>Please Login to Book Event
-        <p>
-          {% endif %}
-          {% if event.status == "Cancelled" or event.status == "SoldOut" or event.status == "Inactive" %}
-        <p>This event is {{ event.status }}.
-        <p>
-          {% endif %}
-          <br>
-          {% if userid and event.status == "Open" %}
-
-          <br>
-        <form>
-          <div class="form-group">
-            <h3>Post Graduate Ticket</h3>
-            <label for="ticket-type">Post Graduate Tickets Remaining: {{event.postgraduate}}</label>
-            <div class="form-group">
-              <label for="ticket-quantity">Quantity</label>
-              <input type="number" class="form-control" id="ticket-quantity" value="1">
-            </div>
-            <button type="submit" class="btn btn-primary">Book Now</button>
-          </div>
-          <div class="form-group">
-            <h3>Student Ticket</h3>
-            <label for="ticket-type">Student Tickets Remaining: {{event.student}}</label>
-            <div class="form-group">
-              <label for="ticket-quantity">Quantity</label>
-              <input type="number" class="form-control" id="ticket-quantity" value="1">
-            </div>
-            <button type="submit" class="btn btn-primary">Book Now</button>
-          </div>
-        </form>
         <br>
-        <form>
-          <div class="form-group">
-            <h3>Concession Ticket</h3>
-            <label for="ticket-type">Concession Tickets Remaining: {{event.concession}}</label>
-            <div class="form-group">
-              <label for="ticket-quantity">Quantity</label>
-              <input type="number" class="form-control" id="ticket-quantity" value="1">
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Book Now</button>
-        </form>
+        {% if not userid %}
+        <h3>Please Login to Book Event</h3>
+        {% endif %}
+        {% if event.status == "Cancelled" or event.status == "SoldOut" or event.status == "Inactive" %}
+        <h3>This event is {{ event.status }}.</h3>
+        {% endif %}
+        <br>
+        {% if event.status == "Open" and userid %}
+        <h3>Click Button Below to Create a Booking:</h3>
+        <br>
+        <a class="btn btn-primary center" href="{{ url_for('book', event_id=event.id) }}"><b>Book
+            Event</b></a>
+        </a>
         {% endif %}
       </div>
 
 
       <!-- Comments -->
+
       <div class="col-md-6">
         <h2>Comments</h2>
         {% if not userid or event.status == "Cancelled" %}
@@ -150,7 +125,7 @@
         <p>
           {% endif %}
           <br>
-          {% if userid and not event.status == "Cancelled"%}
+
         <div class="card mb-3">
           <div class="card-body">
             <h5 class="card-title">Durian Lover</h5>
@@ -171,9 +146,10 @@
           </div>
           <button type="submit" class="btn btn-primary row mt-3 mb-5 float-right">Submit</button>
         </form>
-        {% endif %}
+
       </div>
-  </div>
+      <br>
+      <br>
 
 
 </body>
