@@ -14,7 +14,7 @@ import random
 
 
 app = Flask(__name__)
-# Set the upload folder!!!
+# Set the upload folder
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 # Specify the allowed extensions for file uploads
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
@@ -24,24 +24,12 @@ app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 def event_details(event_id):
     userid = session.get('userid', None)
     event = Event.query.get(event_id)  # Retrieve the event from the database using the event_id
+    comments = Comment.query.filter_by(event_id=event.id).all()
     if event:
-        return render_template('event_details.html', event=event, userid=userid)
+        return render_template('event_details.html', event=event, userid=userid, comments=comments)
     else:
         # Handle event not found case
         return render_template('error.html', message='Event not found')
-    
-@app.route('/event/<event_id>/comment', methods=['POST'])
-def add_comment(event_id):
-    # Get the comment data from the form
-    comment = request.form.get('comment')
-    
-    # Add your logic to process the comment, e.g., store it in a database
-    
-    # Retrieve the event with the updated comment
-    event = Event.query.get(event_id)  # Retrieve the event from the database using the event_id
-    
-    # Render the event details template with the updated event data
-    return render_template('event_details.html', event=event)
 
 # User_booking_history
 @app.route('/user_booking_history', methods=['GET', 'POST'])
@@ -124,6 +112,7 @@ def edit(event_id):
 
     return render_template('event_creation_update.html', event=event)
 
+# Event delete function
 @app.route('/event_details/<event_id>/delete', methods=['GET', 'POST'])
 def delete(event_id):
     events = Event.query.get_or_404(event_id)
@@ -131,7 +120,7 @@ def delete(event_id):
     db.session.commit()
     return redirect('/events/')
 
-#Events
+# Events list
 @app.route('/events/')
 def events():
     userid = session.get('userid', None)
@@ -139,6 +128,24 @@ def events():
     form = EventForm
     return render_template('events.html', events=events, userid=userid, form=form)
 
+# Comments for each events
+@app.route('/event_details/<event_id>/comment', methods=['GET', 'POST'])
+def comment(event_id):
+    event = Event.query.get_or_404(event_id)
+    userid = session.get('userid', None)
+    comment_form = CommentForm()
+
+    if comment_form.validate_on_submit():
+        # Process the submitted comment and save it to the database
+        comment_text = comment_form.comment.data
+        new_comment = Comment(comment=comment_text, event_id=event.id)
+        db.session.add(new_comment)
+        db.session.commit()
+
+        # Redirect to the event_details page
+        return redirect(url_for('event_details'))
+
+    return render_template('comment.html', userid=userid, event=event, form=comment_form)
 
 #Booking
 @app.route('/event_details/<event_id>/book', methods=['GET', 'POST'])
@@ -208,9 +215,7 @@ def book(event_id):
                 new_p = event.postgraduate - booked_postgraduate
                 Event.query.filter(Event.id==booked_event).update(dict(postgraduate= new_p))
             return redirect(url_for('events'))
-    return render_template('book.html', user_id= userid, event=event, form=book)
-
-
+    return render_template('book.html', userid= userid, event=event, form=book)
 
 # Logout
 @app.route('/logout', methods=['GET'])

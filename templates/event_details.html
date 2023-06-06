@@ -121,37 +121,21 @@
       <div class="col-md-6">
         <h2>Comments</h2>
         {% if not userid or event.status == "Cancelled" %}
-        <p>Please Login to Leave a Comment
-        <p>
-          {% endif %}
-          <br>
-
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Durian Lover</h5>
-            <p class="card-text">This event was amazing last year! I had a great time and would definitely
-              recommend it to others.</p>
+        <p>Please Login to Leave a Comment<p>
+        {% endif %}
+        <br>
+        {% for comment in event.comments %}
+          <div class="card mb-3">
+            <div class="card-body">
+              <h5 class="card-title">{{ comment.id }}</h5>
+              <p class="card-text">{{ comment.comment }}</p>
+            </div>
           </div>
+        {% endfor %}
+        <a class="btn btn-primary center" href="{{ url_for('comment', event_id=event.id) }}"><b>Post Comment</b></a>
         </div>
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Sam Smith</h5>
-            <p class="card-text">I thought the event was okay, but the time was too short.</p>
-          </div>
-        </div>
-        <form>
-          <div class="form-group">
-            <label for="comment">Leave a Comment:</label>
-            <textarea class="form-control" id="comment" rows="3"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary row mt-3 mb-5 float-right">Submit</button>
-        </form>
-
-      </div>
-      <br>
-      <br>
-
-
+    </div>
+  </div>  
 </body>
 <!-- Footer -->
 <footer class="py-4 bg-dark text-white">

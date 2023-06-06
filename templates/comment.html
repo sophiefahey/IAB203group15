@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block css %}
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='/event_creation_update.css') }}">
+{% endblock %}
+
+{% block content %}
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand mr-auto btn btn-outline-primary" href="/">COOK JOB</a>
+            <ul class="navbar-nav flex-row ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/events">Events</a>
+                </li>
+                {% if userid %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/user_booking_history">History</a>
+                </li>
+                {% endif %}
+                {% if not userid %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary ml-3" href="/register">Register</a>
+                </li>
+                {% endif %}
+                {% if userid %}
+                {% endif %}
+                {% if not userid %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary ml-3" href="/login">Login</a>
+                </li>
+                {% endif %}
+                {% if userid %}
+                <a class="btn btn-outline-primary ml-3" href="/logout">{{ userid }} Logout</a>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Jumbotron -->
+    <div class="jumbotron jumbotron-with-bg-image">
+        <h1><b>Comment!</b></h1>
+        <h3>Please provide your opinion</h3>
+    </div>
+
+    <form action="{{ url_for('comment', event_id=event.id) }}" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <h1 class="center">Post comment for</h1>
+        <h1 class="center">{{event.title}}:</h1>
+        <br>
+        <br>
+        <h5 class="center">Share your idea</h5>
+        <div class="container center col-md-4">
+            <textarea name="comment" rows="4" class="form-control" placeholder="Post your comment" required></textarea>
+            <br>
+            <p>{{ form.submit(class_="btn btn-primary") }}</p>        
+        </div>
+    </form>
+</body>
+{% endblock %}
