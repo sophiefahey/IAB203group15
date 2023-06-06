@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Event Management Website</title>
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='/index.css') }}">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        
+    </head>
+
+    <body>
+        <!-- Navigation Bar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand mr-auto btn btn-outline-primary" href="#">COOK JOB</a>
+                <ul class="navbar-nav flex-row ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/events">Events</a>
+                    </li>
+                    <!-- History button if logged in -->
+                    {% if userid %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user_booking_history">History</a>
+                    </li>
+                    {% endif %}
+                    <!-- Register button if not logged in -->
+                    {% if not userid %}
+                    <li class="nav-item">
+                        <a class="btn btn-outline-primary ml-3" href="/register">Register </a>
+                    </li>
+                    {% endif %}
+                    <!-- No register button if logged in -->
+                    {% if userid %}
+                    {% endif %}
+                    <!-- Login button if not logged in -->
+                    {% if not userid %}
+                    <li class="nav-item">
+                    <a class="btn btn-outline-primary ml-3" href="/login">Login</a>
+                    </li>
+                    {% endif %} 
+                    <!-- Show username with log out button if logged in -->
+                    {% if userid %}
+                    <a class="btn btn-outline-primary ml-3" href="/logout">{{ userid }} Logout</a>
+                    {% endif %}                    
+                </ul>   
+            </div>
+        </nav>
+
+        <!-- Jumbotron -->
+        <div class="jumbotron jumbotron-with-bg-image">
+            <h1 class="display-4">Welcome to <b>COOK JOB</b> </h1>
+            <p class="lead">Browse our upcoming events and join us for an unforgettable experience.</p>
+            <hr class="my-4">
+            <p><b>Whether you're looking for job in Nursing, IT, Engineering, etc. We have something for YOU.</b></p>
+        </div>
+
+        <!-- Search bar -->
+        <div class="row mt-3 mb-3">
+            <div class="col-md-6 offset-md-3">
+                <form>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for events">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Hot Events -->
+        <div style="text-align: center;">
+            <h2>Hot Events</h2>
+        </div>
+
+        <!-- Hot Events Event Cards -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <img class="card-img-top" src="https://via.placeholder.com/350x200" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Event Title</h5>
+                            <p class="card-text">Lorem ipsum dolor sit amet</p>
+                            <a href="/events">
+                                <button type="button" class="btn btn-primary">Learn More</button>
+                            </a>
+                              
+                        </div>
+                        <div class="card-footer" id="open">
+                            <span class="status-circle1"></span>
+                            <small class="text-muted">Open</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img class="card-img-top" src="https://via.placeholder.com/350x200" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Event Title</h5>
+                            <p class="card-text">Lorem ipsum dolor sit amet</p>
+                            <a href="/events">
+                                <button type="button" class="btn btn-primary">Learn More</button>
+                            </a>                        
+                        </div>
+                        <div class="card-footer" id="sold">
+                            <span class="status-circle3"></span>
+                            <small class="text-muted">Sold Out</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img class="card-img-top" src="https://via.placeholder.com/350x200" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Event Title</h5>
+                            <p class="card-text">Lorem ipsum dolor sit amet</p>
+                            <a href="/events">
+                                <button type="button" class="btn btn-primary">Learn More</button>
+                            </a>                        </div>
+                        <div class="card-footer" id="past">
+                            <span class="status-circle2"></span>
+                            <small class="text-muted">Passed</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="row mt-3 mb-5">
+        </div>
+
+        <!-- Upcoming Events -->
+        <div style="text-align: center;">
+            <h2>Upcoming Events</h2>
+        </div>
+        <!-- Upcoming Event Cards -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <img class="card-img-top" src="https://via.placeholder.com/350x200" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Event Title</h5>
+                            <p class="card-text">Lorem ipsum dolor sit amet</p>
+                            <a href="/events">
+                                <button type="button" class="btn btn-primary">Learn More</button>
+                            </a>                        </div>
+                        <div class="card-footer" id="open">
+                            <span class="status-circle1"></span>
+                            <small class="text-muted">Open</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img class="card-img-top" src="https://via.placeholder.com/350x200" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Event Title</h5>
+                            <p class="card-text">Lorem ipsum dolor sit amet</p>
+                            <a href="/events">
+                                <button type="button" class="btn btn-primary">Learn More</button>
+                            </a>                        </div>
+                        <div class="card-footer" id="open">
+                            <span class="status-circle1"></span>
+                            <small class="text-muted">Open</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img class="card-img-top" src="https://via.placeholder.com/350x200" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Event Title</h5>
+                            <p class="card-text">Lorem ipsum dolor sit amet</p>
+                            <a href="/events">
+                                <button type="button" class="btn btn-primary">Learn More</button>
+                            </a>                        </div>
+                        <div class="card-footer" id="cancel">
+                            <span class="status-circle4"></span>
+                            <small class="text-muted" id="white">Cancelled</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3 mb-5">
+        </div>
+    </body>    
+        
+    <!-- Footer -->
+    <footer class="py-4 bg-dark text-white">
+        <div class="container text-center">
+            <p>Copyright &copy; 2023.
+                <br> Event Management Website.</p>
+        </div>
+    </footer>
+</html>
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+    
