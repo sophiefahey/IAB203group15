@@ -42,7 +42,7 @@
       </ul>
     </div>
   </nav>
-  <br>
+
   {% with errors = get_flashed_messages(category_filter=["error"]) %}
   {% if errors %}
   <div class="alert alert-danger alert-dismissible fade show center" role="alert">
@@ -55,7 +55,7 @@
   </div>
   {% endif %}
   {% endwith %}
-  <br>
+
 
   <!-- Jumbotron -->
   <div class="jumbotron center">
