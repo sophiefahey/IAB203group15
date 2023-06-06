@@ -5,10 +5,10 @@ from flask import Blueprint, render_template, request, redirect, url_for,  flash
 from flask_wtf.csrf import CSRFProtect
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
-from forms import RegisterForm, LoginForm, EventForm, CommentForm
+from forms import RegisterForm, LoginForm, EventForm, CommentForm, BookingForm
 from datetime import datetime, time, date
 from models import db
-from models import Cookuser, Event, Comment
+from models import Cookuser, Event, Comment, Booking
 from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
