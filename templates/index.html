@@ -1,19 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Event Management Website</title>
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='/index.css') }}">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-</head>
+{% extends 'base.html' %}
+{% block css %}
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='/index.css') }}">
+{% endblock%}
+{% block content %}
 
 <body>
     <!-- Navigation Bar -->
@@ -61,12 +51,29 @@
         <p><b>Whether you're looking for a job in Nursing, IT, Engineering, etc. We have something for YOU!</b></p>
     </div>
 
+    <div class="container">
+        {% with errors = get_flashed_messages(category_filter=["error"]) %}
+        {% if errors %}
+        <div class="alert alert-danger alert-dismissible fade show center" role="alert">
+            <ul class="center">
+                {%- for msg in errors %}
+                <li>{{ msg }}</li>
+                {% endfor -%}
+            </ul>
+
+        </div>
+        {% endif %}
+        {% endwith %}
+    </div>
+
+
     <h2 class="center">Seach bar</h2>
     <div class="row mt-3 mb-3">
         <div class="col-md-6 offset-md-3">
-            
+
             <form class="form-inline d-flex flex-nowrap" action="{{ url_for('search', events_id=events.id)}}">
-                <input type="text" name="search" class="form-control flex-grow-1 my-1 mr-sm-2" id="SearchForm" placeholder="Seach for event category or title">
+                <input type="text" name="search" class="form-control flex-grow-1 my-1 mr-sm-2" id="SearchForm"
+                    placeholder="Seach for event category or title">
                 <button type="submit" class="flex-shrink-1 btn btn-primary my-1">Submit</button>
             </form>
         </div>
@@ -80,7 +87,9 @@
     <div class="container">
         <div class="row">
             {% for event in events %}
-            
+
+
+
             <div class="col-md-4">
                 <div class="card mb-4 box-shadow">
                     <div class="card center">
@@ -110,34 +119,8 @@
                     </div>
                 </div>
             </div>
+
             {% endfor %}
         </div>
     </div>
-    <div class="container center homepad">
-        <a href="{{ url_for('events')}}">
-            <button type="button" class="btn btn-secondary">View More Events</button>
-        </a>
-    </div>
-
-</body>
-
-<!-- Footer -->
-<footer class="py-4 bg-dark text-white">
-    <div class="container text-center">
-        <p>Copyright &copy; 2023.
-            <br> Event Management Website.
-        </p>
-    </div>
-</footer>
-
-</html>
-<!-- Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
+    {% endblock%}

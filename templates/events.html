@@ -1,20 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+{% block css %}
+ <!-- Custom CSS -->
+ <link rel="stylesheet" href="{{ url_for('static', filename='/event_details.css') }}">
+{% endblock%}
+{% block content %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Event Management Website</title>
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='/event_details.css') }}">
-
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-
-</head>
 
 <body>
   <!-- Navigation Bar -->
@@ -62,23 +52,26 @@
     <a class="btn btn-outline-primary ml-3" href="/create_event"><b>Create Event</b></a>
     {% endif %}
 
-  </div>
-<div class="container">
-  
-        {% with messages = get_flashed_messages(category_filter=["success"]) %}
-        {% if messages %}
-        <div class="alert alert-success alert-dismissible fade show center"
-             role="alert">
-            <ul class="center">
-                {%- for msg in messages %}
-                <li>{{ msg }}</li>
-                {% endfor -%}
-            </ul>
 
-        </div>
-        {% endif %}
-        {% endwith %}
-      </div>
+
+
+
+  </div>
+  <div class="container">
+
+    {% with messages = get_flashed_messages(category_filter=["success"]) %}
+    {% if messages %}
+    <div class="alert alert-success alert-dismissible fade show center" role="alert">
+      <ul class="center">
+        {%- for msg in messages %}
+        <li>{{ msg }}</li>
+        {% endfor -%}
+      </ul>
+
+    </div>
+    {% endif %}
+    {% endwith %}
+  </div>
 
   <!-- Search bar -->
   <h2 class="center">Seach bar</h2>
@@ -86,7 +79,8 @@
     <div class="col-md-6 offset-md-3">
 
       <form class="form-inline d-flex flex-nowrap" action="{{ url_for('event_search', events_id=events.id)}}">
-        <input type="text" name="search" class="form-control flex-grow-1 my-1 mr-sm-2" id="SearchForm" placeholder="Seach for event category or title">
+        <input type="text" name="search" class="form-control flex-grow-1 my-1 mr-sm-2" id="SearchForm"
+          placeholder="Seach for event category or title">
         <button type="submit" class="flex-shrink-1 btn btn-primary my-1">Submit</button>
       </form>
     </div>
@@ -98,7 +92,7 @@
       <div class="col-md-4">
         <div class="card mb-4 box-shadow">
           <div class="card center">
-            
+
             <!-- <a href="{{ url_for('event_details', event_id=event.id) }}"> -->
             <!-- Link to event details page -->
             <img class="card-img-top">
@@ -141,23 +135,8 @@
       </div>
       {% endfor %}
 
-      
+
     </div>
   </div>
 
-
-  <!-- Bootstrap JS -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-</body>
-
-<!-- Footer -->
-<!-- <footer class="py-4 bg-dark text-white">
-  <div class="container text-center">
-    <p>
-      © 2023. Event Management Website.
-      <br> All rights reserved.
-    </p>
-  </div>
-</footer> -->
-
-</html>
+  {% endblock%}

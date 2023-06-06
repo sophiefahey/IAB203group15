@@ -261,15 +261,21 @@ def search():
         userid = session.get('userid', None)
         query_res = request.args['search']
         
-        if query_res == "IT" or query_res == "Engineering" or query_res == "Arts" or query_res == "Education" or query_res == "Business":
-            events = Event.query.filter(Event.category==query_res)
-            
+        if query_res == "IT" or query_res == "it" or query_res == "iT" or query_res == "It":
+            events = Event.query.filter(Event.category=="IT")
+        elif query_res == "Engineering" or query_res == "engineering" or query_res == "engine":
+            events = Event.query.filter(Event.category=="Engineering")
+        elif query_res == "arts" or query_res == "Arts":
+            events = Event.query.filter(Event.category=="Arts")
+        elif query_res == "education" or query_res == "Education":
+            events = Event.query.filter(Event.category=="Education")
+        elif query_res == "business" or query_res == "Business":
+            events = Event.query.filter(Event.category=="Business")
         else:
             events = Event.query.filter(Event.title==query_res)
-            
 
-            return render_template('index.html', events=events, userid=userid)
-        return render_template('index.html', events=events, userid=userid)
+            return render_template('events.html', events=events, userid=userid)
+        return render_template('events.html', events=events, userid=userid)
   
 
 #search bar for event details
@@ -290,9 +296,6 @@ def event_search():
             events = Event.query.filter(Event.category=="Business")
         else:
             events = Event.query.filter(Event.title==query_res)
-            if query_res == "?":
-                print("hey")
-            
 
             return render_template('events.html', events=events, userid=userid)
         return render_template('events.html', events=events, userid=userid)

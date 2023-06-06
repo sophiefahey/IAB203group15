@@ -1,19 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Event Management Website</title>
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='/event_creation_update.css') }}">
-</head>
+{% extends 'base.html' %}
+{% block css %}
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='/event_creation_update.css') }}">
+{% endblock%}
+{% block content %}
 
 <body>
     <!-- Navigation Bar -->
@@ -34,8 +24,8 @@
 
     <!-- Jumbotron -->
     <div class="jumbotron jumbotron-with-bg-image">
-        <h1><b>Event Creation/Update Page</b></h1>
-        <p>- Please provide the details of your event: - </p>
+        <h1><b>Event Creation</b></h1>
+        <p>Please provide the details of your event: </p>
     </div>
 
     <!-- Event details -->
@@ -44,16 +34,15 @@
 
         <form method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-            <h1 style="width: 100%">
-                Edit {{ event.title }}'s Details
+            <h1 class="center">
+                Edit Event: {{ event.title }}
             </h1>
-
+            <br>
+            <br>
             <div class="container center col-md-6">
                 <div class="form-group">
-                    <p>
-                        <label for="category">Category: </label>
-                    <p>Current Category: {{event.category}}</p>
-                    <select id="category" name="category">
+                    <label for="category">Category: </label>
+                    <select id="category" name="category" class="form-control center">
                         <option value="{{event.category}}">{{event.category}}</option>
                         <option value="IT">IT</option>
                         <option value="Nursing">Nursing</option>
@@ -62,92 +51,73 @@
                         <option value="Education">Education</option>
                         <option value="Business">Business</option>
                     </select>
-                    </p>
-                    <p>
-                        <label for="title">Title:</label>
-                        <input type="text" name="title" value={{ event.title }} placeholder="title">
-                        </input>
-                    </p>
-                    <p>
-                        <label for="description">Description:</label>
-                        <textarea name="description" value={{ event.description }} placeholder="description">
+                </div>
+                <label for="title">Title:</label>
+                <input type="text" name="title" value={{ event.title }} placeholder="title" class="form-control center">
+                </input>
+                <label for="description">Description:</label>
+                <textarea name="description" value={{ event.description }} placeholder="description"
+                    class="form-control center">
                         </textarea>
-                    </p>
-                    <p>
+                <div class="row">
+                    <div class="container col-md-4 center">
                         <label for="date">Date:</label>
-                        <input type="date" name="date" value={{ event.date }} placeholder="date">
+                        <input type="date" name="date" value={{ event.date }} placeholder="date" class="form-control">
                         </input>
-                    </p>
-                    <p>
+
                         <label for="time">Time:</label>
-                        <input type="time" name="time" value={{ event.time }} placeholder="time">
+                        <input type="time" name="time" value={{ event.time }} placeholder="time" class="form-control">
                         </input>
-                    </p>
-                    <p>
-                        <label for="address">Address:</label>
-                        <input type="text" name="address" value={{ event.address }} placeholder="address">
-                        </input>
-                    </p>
-                    <p>
-                        <label for="states">State:</label>
-                        <p>Current State: {{event.states}}</p>
-                        <select id="states" name="states">
-                            <option value="{{event.states}}">{{event.states}}</option>
-                            <option value="NSW">NSW</option>
-                            <option value="NT">NT</option>
-                            <option value="QLD">QLD</option>
-                            <option value="SA">SA</option>
-                            <option value="TA">TA</option>
-                            <option value="VIC">VIC</option>
-                            <option value="WA">WA</option>
-                        </select>
-                    </p>
-                    <p>
-                        <label for="student">Student:</label>
-                        <input type="number" name="student" value={{ event.student }} placeholder="student">
-                        </input>
-                    </p>
-                    <p>
-                        <label for="postgraduate">Postgraduate:</label>
-                        <input type="number" name="postgraduate" value={{ event.postgraduate }}
-                            placeholder="postgraduate">
-                        </input>
-                    </p>
-                    <p>
-                        <label for="concession">Concession:</label>
-                        <input type="number" name="concession" value={{ event.concession }} placeholder="concession">
-                        </input>
-                    </p>
-                    <p>
-                        <label for="status">Status:</label>
-                        <p>Current Status: {{event.status}}</p>
-                        <select id="status" name="status">
-                            <option value="{{event.status}}">{{event.status}}</option>
-                            <option value="Open">Open</option>
-                            <option value="SoldOut">SoldOut</option>
-                            <option value="Inactive">Inactive</option>
-                            <option value="Cancelled">Cancelled</option>
-                        </select>
-                    </p>
+
+                    </div>
+                </div>
+                <label for="address">Address:</label>
+                <input type="text" name="address" value={{ event.address }} placeholder="address"
+                    class="form-control center">
+                </input>
+                <label for="states">State:</label>
+
+                <select id="states" name="states" class="form-control center">
+                    <option value="{{event.states}}">{{event.states}}</option>
+                    <option value="NSW">NSW</option>
+                    <option value="NT">NT</option>
+                    <option value="QLD">QLD</option>
+                    <option value="SA">SA</option>
+                    <option value="TA">TA</option>
+                    <option value="VIC">VIC</option>
+                    <option value="WA">WA</option>
+                </select>
+                <label for="student">Available Student Tickets:</label>
+                <input type="number" name="student" value={{ event.student }} placeholder="student"
+                    class="form-control center">
+                </input>
+                <label for="postgraduate">Available Postgraduate Tickets:</label>
+                <input type="number" name="postgraduate" value={{ event.postgraduate }} placeholder="postgraduate"
+                    class="form-control center">
+                </input>
+                </p>
+                <p>
+                    <label for="concession">Available Concession Tickets:</label>
+                    <input type="number" name="concession" value={{ event.concession }} placeholder="concession"
+                        class="form-control center">
+                    </input>
+                    <label for="status">Status:</label>
+                    <select id="status" name="status" class="form-control center">
+                        <option value="{{event.status}}">{{event.status}}</option>
+                        <option value="Open">Open</option>
+                        <option value="Inactive">Inactive</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                    <br>
+                <div class="container center col-md-4">
                     <form method="POST" action="{{ url_for('edit', event_id=event.id) }}">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                        <input type="submit" value="Edit Event"
-                            onclick="return confirm('Are you sure you want to edit this entry?')">
+                        <input type="submit" value="Edit Event" class="btn btn-primary">
                     </form>
+                </div>
         </form>
+        <br>
+        <br>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-</body>
-
-<!-- Footer -->
-<footer class="py-4 bg-dark text-white">
-    <div class="container text-center">
-        <p>Copyright &copy; 2023.
-            <br> Event Management Website.
-        </p>
-    </div>
-</footer>
-
-</html>
+    {% endblock%}
