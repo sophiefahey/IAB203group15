@@ -1,7 +1,7 @@
 import os
 from flask import Flask
 from flask import session
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for,  flash
 from flask_wtf.csrf import CSRFProtect
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
@@ -137,6 +137,79 @@ def events():
     form = EventForm
     return render_template('events.html', events=events, userid=userid, form=form)
 
+
+#Booking
+@app.route('/event_details/<event_id>/book', methods=['GET', 'POST'])
+def book(event_id):
+    book = BookingForm()
+    event = Event.query.get_or_404(event_id)
+    userid = session.get('userid', None)
+
+    if book.validate_on_submit():
+        
+        booked_event = event.id
+        order = random.randint(0, 10000000000000)
+
+        booked_postgraduate = (int)(request.form['booked_postgraduate'])
+        booked_student = (int)(request.form['booked_student'])
+        booked_concession = (int)(request.form['booked_concession'])
+
+        if booked_student == event.student and booked_postgraduate == event.postgraduate and booked_concession == event.concession:
+            lol = "SoldOut"
+            flash(f'Booking Successful for {userid}. Your OrderId is {order}', 'success')
+            booking = Booking(order=order, userid=userid,  booked_eventid=booked_event, booked_student=booked_student, booked_postgraduate=booked_postgraduate, booked_concession=booked_concession)
+            db.session.add(booking)
+            if booked_student>-1 or booked_concession>-1 or booked_student>-1:
+                new_s = event.student - booked_student
+                new_c = event.concession - booked_concession
+                new_p = event.postgraduate - booked_postgraduate
+                Event.query.filter(Event.id==booked_event).update(dict(student= new_s))
+                Event.query.filter(Event.id==booked_event).update(dict(concession= new_c))
+                Event.query.filter(Event.id==booked_event).update(dict(postgraduate= new_p))
+                Event.query.filter(Event.id==booked_event).update(dict(status=lol))
+                return redirect('/events/')
+            return redirect('/events/')
+            
+        elif booked_student > event.student or booked_postgraduate > event.postgraduate or booked_concession > event.concession:
+            flash('Number of Tickets Entered Exceeds Number of Tickets Available', 'error')
+            return redirect(url_for('event_details', event_id=event.id))
+
+        elif booked_student == -1 and booked_postgraduate == -1 and booked_concession == -1:
+            flash('No Tickets Were Selected', 'error')
+            return redirect(url_for('event_details', event_id=event.id))
+
+        elif booked_student==event.student and event.concession==0 and event.postgraduate==0:
+            event.status = "SoldOut"
+            flash(f'Booking Successful for {userid}. Your OrderId is {order}', 'success')
+            return redirect(url_for('events'))
+        elif event.student==0 and event.concession==booked_concession and event.postgraduate==0:
+            print("pop")
+            event.status = "SoldOut"
+            flash(f'Booking Successful for {userid}. Your OrderId is {order}', 'success')
+            return redirect(url_for('events'))
+        elif event.student==0 and event.concession==0 and event.postgraduate==booked_postgraduate:
+            print("cool")
+            event.status = "SoldOut"
+            flash(f'Booking Successful for {userid}. Your OrderId is {order}', 'success')
+            return redirect(url_for('events'))
+        else: 
+            booking = Booking(order=order, userid=userid,  booked_eventid=booked_event, booked_student=booked_student, booked_postgraduate=booked_postgraduate, booked_concession=booked_concession)
+            db.session.add(booking)
+            flash(f'Booking Successful for {userid}. Your OrderId is {order}', 'success')
+            if booked_student>-1:
+                new_s = event.student - booked_student
+                Event.query.filter(Event.id==booked_event).update(dict(student= new_s))
+            if booked_concession>-1:
+                new_c = event.concession - booked_concession
+                Event.query.filter(Event.id==booked_event).update(dict(concession= new_c))
+            if booked_postgraduate>-1:
+                new_p = event.postgraduate - booked_postgraduate
+                Event.query.filter(Event.id==booked_event).update(dict(postgraduate= new_p))
+            return redirect(url_for('events'))
+    return render_template('book.html', user_id= userid, event=event, form=book)
+
+
+
 # Logout
 @app.route('/logout', methods=['GET'])
 def logout():
@@ -193,16 +266,25 @@ def search():
   
 
 #search bar for event details
-@app.route('/event_details/search',methods=['GET'])
+@app.route('/events/search',methods=['GET'])
 def event_search():
         userid = session.get('userid', None)
         query_res = request.args['search']
         
-        if query_res == "IT" or query_res == "Engineering" or query_res == "Arts" or query_res == "Education" or query_res == "Business":
-            events = Event.query.filter(Event.category==query_res)
-            
+        if query_res == "IT" or query_res == "it" or query_res == "iT" or query_res == "It":
+            events = Event.query.filter(Event.category=="IT")
+        elif query_res == "Engineering" or query_res == "engineering" or query_res == "engine":
+            events = Event.query.filter(Event.category=="Engineering")
+        elif query_res == "arts" or query_res == "Arts":
+            events = Event.query.filter(Event.category=="Arts")
+        elif query_res == "education" or query_res == "Education":
+            events = Event.query.filter(Event.category=="Education")
+        elif query_res == "business" or query_res == "Business":
+            events = Event.query.filter(Event.category=="Business")
         else:
             events = Event.query.filter(Event.title==query_res)
+            if query_res == "?":
+                print("hey")
             
 
             return render_template('events.html', events=events, userid=userid)
