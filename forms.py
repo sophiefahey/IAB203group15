@@ -64,12 +64,3 @@ class BookingForm(FlaskForm):
     booked_concession = SelectField("Test: ", choices=[(-1, "0"), (1, "1"), (2, "2"),(3, "3"), (4, "4"), (5, "5"),(6,"6")])
     submit = SubmitField('Book Event')
 
-class Booking(db.Model):
-    __tablename__ = 'bookings'
-    id=db.Column(db.Integer, primary_key=True, unique=True)
-    order=db.Column(db.Integer, unique=True)
-    userid =db.Column(db.String(100), db.ForeignKey('cookuser.id'))
-    booked_eventid = db.Column(db.Integer, db.ForeignKey('events.id'))
-    booked_student = db.Column(db.Integer, nullable=False)
-    booked_concession = db.Column(db.Integer, nullable=False)
-    booked_postgraduate = db.Column(db.Integer, nullable=False)
