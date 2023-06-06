@@ -1,24 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+{% block css %}
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='/event_creation_update.css') }}">
+{% endblock%}
+{% block content %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Event Management Website</title>
-
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='/event_creation_update.css') }}">
-</head>
 
 <body>
-     <!-- Navigation Bar -->
-     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand mr-auto btn btn-outline-primary" href="/">COOK JOB</a>
             <ul class="navbar-nav flex-row ml-auto">
@@ -56,21 +46,23 @@
 
     <!-- Jumbotron -->
     <div class="jumbotron jumbotron-with-bg-image">
-        <h1><b>Event Creation/Update Page</b></h1>
-        <p>- Please provide the details of your event: - </p>
+        <h1><b>Create Event</b></h1>
+        <p>Please provide the details of your event:</p>
     </div>
 
     <!-- Event details -->
-    <div class="container center col-md-6">
+    <div class="container center col-md-4">
         <form method="POST" action="/create_event">
             {{ form.csrf_token }}
             <div class="form-group">
                 <label for="event-category">Category:</label>
+
                 {{ form.category(class="form-control center", id="event-category") }}
             </div>
+
             <div class="form-group">
                 <label for="event-title">Title:</label>
-                {{ form.title(class="form-control", id="event-title") }}
+                {{ form.title(class="form-control center", id="event-title") }}
             </div>
             <div class="form-group">
                 <label for="image">Image:</label>
@@ -85,13 +77,15 @@
                 <label for="event-description">Description:</label>
                 {{ form.description(class="form-control", id="event-description") }}
             </div>
-            <div class="form-group">
-                <label for="event-date">Date:</label>
-                {{ form.date(class="form-control center", id="event-date") }}
-            </div>
-            <div class="form-group">
-                <label for="event-time">Time:</label>
-                {{ form.time(class="form-control center", id="event-time") }}
+            <div class="row">
+                <div class="form-group center col-md-4">
+                    <label for="event-date">Date:</label>
+                    {{ form.date(class="form-control center", id="event-date") }}
+                </div>
+                <div class="form-group center col-md-4">
+                    <label for="event-time">Time:</label>
+                    {{ form.time(class="form-control center", id="event-time") }}
+                </div>
             </div>
             <div class="form-group">
                 <label for="event-location">Address:</label>
@@ -117,10 +111,12 @@
             </div>
             <br>
             <div class="form-group">
-                <label for="event-status">Status:</label>
-                {{ form.status(class="form-control center", id="event-status") }}
+                <label for="status">Status:</label>
+                <select id="status" name="status" class="form-control center">
+                    <option value="Open">Open</option>
+                </select>
             </div>
-
+            <br>
             <div class="row mt-3 mb-5">
                 <div class="col-md-12 text-center">
                     {{ form.submit(class="btn btn-primary") }}
@@ -129,18 +125,5 @@
         </form>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-</body>
 
-<!-- Footer -->
-<footer class="py-4 bg-dark text-white">
-    <div class="container text-center">
-        <p>
-            © 2023. Event Management Website.
-            <br> All rights reserved.
-        </p>
-    </div>
-</footer>
-
-</html>
+    {% endblock%}
