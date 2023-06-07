@@ -27,7 +27,7 @@ class CommentForm(FlaskForm):
     id = StringField('userid', validators=[DataRequired()])
     comment  = TextAreaField('comment', validators=[DataRequired()])
     created_at = DateField ('created_at', validators=[DataRequired()])
-    submit = SubmitField('Post')
+    submit = SubmitField('Post Comment')
 
 # Register form
 class RegisterForm(FlaskForm):
