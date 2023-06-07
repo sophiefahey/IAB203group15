@@ -39,8 +39,10 @@ class Event(db.Model):
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
-    comment = db.Column(db.Text)
+    comment_text = db.Column(db.Text)
     event_id = db.Column(db.Integer, db.ForeignKey('events.id', ondelete='CASCADE'))
+    created_at = db.Column(db.DateTime, nullable=False)
+    commenter_username = db.Column(db.String(100), nullable=False)
 
     def __repr__(self):
         return "<Comment: {}>".format(self.comment)

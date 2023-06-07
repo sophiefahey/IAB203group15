@@ -1,4 +1,4 @@
-from models import Cookuser, Event
+from cookjob.models import Cookuser, Event
 from flask_wtf import FlaskForm
 from wtforms import SelectField, FileField, StringField, TextAreaField, PasswordField, DateField, TimeField, SubmitField, IntegerField, EmailField
 from wtforms.validators import DataRequired, EqualTo
@@ -24,8 +24,8 @@ class EventForm(FlaskForm):
 
 # Comment form
 class CommentForm(FlaskForm):
-    id = StringField('userid', validators=[DataRequired()])
-    comment  = TextAreaField('comment', validators=[DataRequired()])
+    commenter_username = StringField('commenter_username', validators=[DataRequired()])
+    comment_text  = TextAreaField('comment', validators=[DataRequired()])
     created_at = DateField ('created_at', validators=[DataRequired()])
     submit = SubmitField('Post Comment')
 

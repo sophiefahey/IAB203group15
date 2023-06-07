@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block css %}
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='/event_creation_update.css') }}">
+{% endblock%}
+{% block content %}
+
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand mr-auto btn btn-outline-primary" href="/">COOK JOB</a>
+            <ul class="navbar-nav flex-row ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/events">Events</a>
+                </li>
+                <!-- History button if logged in -->
+                {% if userid %}
+                <li class="nav-item ">
+                    <a class="nav-link" href="/user_booking_history">History</a>
+                </li>
+                {% endif %}
+                <!-- Register button if not logged in -->
+                {% if not userid %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary ml-3" href="/register">Register </a>
+                </li>
+                {% endif %}
+                <!-- No register button if logged in -->
+                {% if userid %}
+                {% endif %}
+                <!-- Login button if not logged in -->
+                {% if not userid %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary ml-3" href="/login">Login</a>
+                </li>
+                {% endif %}
+                <!-- Show username with log out button if logged in -->
+                {% if userid %}
+                <a class="btn btn-outline-primary ml-3" href="/logout">{{ userid }} Logout</a>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Jumbotron -->
+    <div class="jumbotron jumbotron-with-bg-image">
+        <h1><b>Create Event</b></h1>
+        <p>Please provide the details of your event:</p>
+    </div>
+
+    <!-- Event details -->
+    <div class="container center col-md-4">
+        <form method="POST" action="/create_event">
+            {{ form.csrf_token }}
+            <div class="form-group">
+                <label for="event-category">Category:</label>
+
+                {{ form.category(class="form-control center", id="event-category") }}
+            </div>
+
+            <div class="form-group">
+                <label for="event-title">Title:</label>
+                {{ form.title(class="form-control center", id="event-title") }}
+            </div>
+            <div class="form-group">
+                <label for="image">Image (Optional):</label>
+                {% if event and event.image %}
+                <img class="card-img-top" src="{{ event.image }}" alt="Event Image">
+                <input type="file" class="form-control center" id="image" name="image" accept="image/*">
+                {% else %}
+                <input type="file" class="form-control center" id="image" name="image" accept="image/*">
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="event-description">Description:</label>
+                {{ form.description(class="form-control", id="event-description") }}
+            </div>
+            <div class="row">
+                <div class="form-group center col-md-4">
+                    <label for="event-date">Date:</label>
+                    {{ form.date(class="form-control center", id="event-date") }}
+                </div>
+                <div class="form-group center col-md-4">
+                    <label for="event-time">Time:</label>
+                    {{ form.time(class="form-control center", id="event-time") }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="event-location">Address:</label>
+                {{ form.address(class="form-control center", id="event-address") }}
+            </div>
+            <div class="form-group">
+                <label for="event-states">State:</label>
+                {{ form.states(class="form-control center", id="event-states") }}
+            </div>
+            <br>
+            <label>Ticket Quantity:</label>
+            <div class="form-group">
+                <label for="event-student">Student:</label>
+                {{ form.student(class="form-control center", id="event-student") }}
+            </div>
+            <div class="form-group">
+                <label for="event-postgraduate">Post-Graduate:</label>
+                {{ form.postgraduate(class="form-control center", id="event-postgraduate") }}
+            </div>
+            <div class="form-group">
+                <label for="event-concession">Concession:</label>
+                {{ form.concession(class="form-control center", id="event-concession") }}
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <select id="status" name="status" class="form-control center">
+                    <option value="Open">Open</option>
+                </select>
+            </div>
+            <br>
+            <div class="row mt-3 mb-5">
+                <div class="col-md-12 text-center">
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    {% endblock%}

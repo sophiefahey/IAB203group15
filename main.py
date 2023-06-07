@@ -1,23 +1,24 @@
 import os
 from flask import Flask
 from flask import session
-from flask import Blueprint, render_template, request, redirect, url_for,  flash
+from flask import render_template, request, redirect, url_for,  flash
 from flask_wtf.csrf import CSRFProtect
-from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
-from forms import RegisterForm, LoginForm, EventForm, CommentForm, BookingForm
+from cookjob.forms import RegisterForm, LoginForm, EventForm, CommentForm, BookingForm
 from datetime import datetime, time, date
-from models import db
-from models import Cookuser, Event, Comment, Booking
+from cookjob.models import db
+from cookjob.models import Cookuser, Event, Comment, Booking
 from flask_bootstrap import Bootstrap
 import random
 
 
-app = Flask(__name__)
-# Set the upload folder
-app.config['UPLOAD_FOLDER'] = 'static/uploads'
+app = Flask(__name__, template_folder='cookjob/template')
+# Set the upload folder!!!
+app.config['UPLOAD_FOLDER'] = 'cookjob/static/uploads'
 # Specify the allowed extensions for file uploads
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
+
+app.static_folder = 'cookjob/static'
 
 # Each event details
 @app.route('/event_details/<int:event_id>', methods=['GET', 'POST'])
@@ -34,7 +35,8 @@ def event_details(event_id):
 # User_booking_history
 @app.route('/user_booking_history', methods=['GET', 'POST'])
 def user_booking_history():
-    return render_template('user_booking_history.html')
+    userid = session.get('userid', None)
+    return render_template('user_booking_history.html', userid=userid)
 
 # Event creation
 @app.route('/create_event', methods=['GET', 'POST'])
@@ -108,6 +110,7 @@ def edit(event_id):
         db.session.add(event)
         db.session.commit()
 
+
         return redirect(url_for('events'))
 
     return render_template('event_creation_update.html', event=event)
@@ -133,17 +136,22 @@ def events():
 def comment(event_id):
     event = Event.query.get_or_404(event_id)
     userid = session.get('userid', None)
-    comment_form = CommentForm()
 
-    if comment_form.validate_on_submit():
+    created_at = datetime.now()
+    comment_form = CommentForm()
+    print("lol")
+
+    if request.method == 'POST':
+        print("hey")
         # Process the submitted comment and save it to the database
-        comment_text = comment_form.comment.data
-        new_comment = Comment(comment=comment_text, event_id=event.id)
+        comment_text = request.form.get('comment_text')
+        commenter_username = request.form.get('commenter_username')
+        new_comment = Comment(comment_text=comment_text, event_id=event.id, created_at=created_at, commenter_username=commenter_username)
         db.session.add(new_comment)
         db.session.commit()
 
         # Redirect to the event_details page
-        return redirect(url_for('event_details'))
+        return redirect(url_for('event_details', event_id=event.id))
 
     return render_template('comment.html', userid=userid, event=event, form=comment_form)
 
@@ -279,12 +287,10 @@ def register():
         # Send user details to the DB
         db.session.add(cookuser)
         db.session.commit()
-
-        print('success')
         return redirect('/login/')
     return render_template('register.html', form=form)
 
-from sqlalchemy import desc
+
 
 #search bar
 @app.route('/search',methods=['GET'])
