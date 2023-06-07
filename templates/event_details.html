@@ -121,31 +121,12 @@
               <p class="card-text">{{ comment.comment }}</p>
             </div>
           </div>
-        {% endfor %}
-        <a class="btn btn-primary center" href="{{ url_for('comment', event_id=event.id) }}"><b>Post Comment</b></a>
+          {% endfor %}
+          <a class="btn btn-primary center" href="{{ url_for('comment', event_id=event.id) }}"><b>Post Comment</b></a>
+          </p>
+          </p>
         </div>
-<<<<<<< HEAD
-    </div>
-  </div>  
-</body>
-<!-- Footer -->
-<footer class="py-4 bg-dark text-white">
-  <div class="container text-center">
-    <p>
-      © 2023. Event Management Website.
-      <br> All rights reserved.
-    </p>
-=======
-        <form>
-          <div class="form-group">
-            <label for="comment">Leave a Comment:</label>
-            <textarea class="form-control" id="comment" rows="3"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary row mt-3 mb-5 float-right">Submit</button>
-        </form>
-
       </div>
     </div>
->>>>>>> 746571b1d957203024bba61cbf4521078fae2153
-  </div>
-  {% endblock%}
+  
+    {% endblock%}
