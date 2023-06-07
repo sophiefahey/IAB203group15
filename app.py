@@ -108,9 +108,6 @@ def edit(event_id):
         db.session.add(event)
         db.session.commit()
 
-        if event.student>=1 and event.postgraduate>=1 and event.concession>=1:
-            event.status = "Open"
-
         return redirect(url_for('events'))
 
     return render_template('event_creation_update.html', event=event)
