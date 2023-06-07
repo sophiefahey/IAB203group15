@@ -65,7 +65,7 @@
                 {{ form.title(class="form-control center", id="event-title") }}
             </div>
             <div class="form-group">
-                <label for="image">Image:</label>
+                <label for="image">Image (Optional):</label>
                 {% if event and event.image %}
                 <img class="card-img-top" src="{{ event.image }}" alt="Event Image">
                 <input type="file" class="form-control center" id="image" name="image" accept="image/*">

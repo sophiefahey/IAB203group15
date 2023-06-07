@@ -304,7 +304,7 @@ def event_search():
 @app.route('/', methods=['GET'])
 def index():
     userid = session.get('userid', None)
-    events = Event.query.all()
+    events = Event.query.filter(Event.status=="Open")
     return render_template('index.html', events=events, userid=userid)
 
 
