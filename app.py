@@ -108,6 +108,9 @@ def edit(event_id):
         db.session.add(event)
         db.session.commit()
 
+        if event.student>=1 and event.postgraduate>=1 and event.concession>=1:
+            event.status = "Open"
+
         return redirect(url_for('events'))
 
     return render_template('event_creation_update.html', event=event)
@@ -189,19 +192,50 @@ def book(event_id):
 
         elif booked_student==event.student and event.concession==0 and event.postgraduate==0:
             event.status = "SoldOut"
+            new_s = event.student - booked_student
+            Event.query.filter(Event.id==booked_event).update(dict(student= new_s))
             flash(f'Booking Successful for {userid}. Your OrderId is {order}', 'success')
             return redirect(url_for('events'))
+
         elif event.student==0 and event.concession==booked_concession and event.postgraduate==0:
-            print("pop")
             event.status = "SoldOut"
+            new_c = event.concession - booked_concession
+            Event.query.filter(Event.id==booked_event).update(dict(concession= new_c))
             flash(f'Booking Successful for {userid}. Your OrderId is {order}', 'success')
             return redirect(url_for('events'))
+
         elif event.student==0 and event.concession==0 and event.postgraduate==booked_postgraduate:
-            print("cool")
             event.status = "SoldOut"
+            new_p = event.postgraduate - booked_postgraduate
+            Event.query.filter(Event.id==booked_event).update(dict(postgraduate= new_p))
             flash(f'Booking Successful for {userid}. Your OrderId is {order}', 'success')
             return redirect(url_for('events'))
-        else: 
+            
+        elif event.student==0 and event.postgraduate==booked_postgraduate and event.concession==booked_concession:
+            event.status = "SoldOut"
+            new_p = event.postgraduate - booked_postgraduate
+            Event.query.filter(Event.id==booked_event).update(dict(postgraduate= new_p))
+            new_c = event.concession - booked_concession
+            Event.query.filter(Event.id==booked_event).update(dict(concession= new_c))
+            flash(f'Booking Successful for {userid}. Your OrderId is {order}', 'success')
+            return redirect(url_for('events'))
+        elif event.postgraduate==booked_postgraduate and event.student==booked_student and event.concession==0:
+            event.status = "SoldOut"
+            new_p = event.postgraduate - booked_postgraduate
+            Event.query.filter(Event.id==booked_event).update(dict(postgraduate= new_p))
+            new_s = event.student - booked_student
+            Event.query.filter(Event.id==booked_event).update(dict(student= new_s))
+            flash(f'Booking Successful for {userid}. Your OrderId is {order}', 'success')
+            return redirect(url_for('events'))
+        elif event.postgraduate ==0 and event.student==booked_student and event.concession==booked_concession:
+            event.status = "SoldOut"
+            new_s = event.student - booked_student
+            Event.query.filter(Event.id==booked_event).update(dict(student= new_s))
+            new_c = event.concession - booked_concession
+            Event.query.filter(Event.id==booked_event).update(dict(concession= new_c))
+            flash(f'Booking Successful for {userid}. Your OrderId is {order}', 'success')
+            return redirect(url_for('events'))
+        else:
             booking = Booking(order=order, userid=userid,  booked_eventid=booked_event, booked_student=booked_student, booked_postgraduate=booked_postgraduate, booked_concession=booked_concession)
             db.session.add(booking)
             flash(f'Booking Successful for {userid}. Your OrderId is {order}', 'success')
