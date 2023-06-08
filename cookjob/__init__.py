@@ -8,7 +8,7 @@ from cookjob.forms import RegisterForm, LoginForm, EventForm, CommentForm, Booki
 from datetime import datetime, time, date
 from cookjob.models import db
 from cookjob.models import Cookuser, Event, Comment, Booking
-from flask_bootstrap import Bootstrap4
+from flask_bootstrap import Bootstrap
 import random
 
 
@@ -361,7 +361,7 @@ def create_app():
         return render_template('index.html', events=events, userid=userid)
 
 
-    bootstrap = Bootstrap4(app)
+    bootstrap = Bootstrap(app)
     basedir = os.path.abspath(os.path.dirname(__file__))
     dbfile = os.path.join(basedir, '../instance/db.sqlite')
     
