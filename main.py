@@ -295,6 +295,9 @@ def register():
         cookuser.userid = form.data.get('userid')
         cookuser.username = form.data.get('username')
         cookuser.password = form.data.get('password')
+        cookuser.address = form.data.get('address')
+        cookuser.phonenumber = form.data.get('phonenumber')
+        cookuser.email = form.data.get('email')
 
         # Send user details to the DB
         db.session.add(cookuser)
