@@ -170,7 +170,8 @@ def book(event_id):
         booked_postgraduate = (int)(request.form['booked_postgraduate'])
         booked_student = (int)(request.form['booked_student'])
         booked_concession = (int)(request.form['booked_concession'])
-
+        # customer books the same number of tickets that are in student, postgraduate and concession
+        #  = SoldOUt
         if booked_student == event.student and booked_postgraduate == event.postgraduate and booked_concession == event.concession:
             lol = "SoldOut"
             flash(f'Booking Successful for {userid}. Your OrderId is {order}', 'success')
@@ -186,36 +187,43 @@ def book(event_id):
                 Event.query.filter(Event.id==booked_event).update(dict(status=lol))
                 return redirect('/events/')
             return redirect('/events/')
-            
+            # customer books tickets that exceed the amount are in student, postgraduate or concession
+            #  = Error
         elif booked_student > event.student or booked_postgraduate > event.postgraduate or booked_concession > event.concession:
             flash('Number of Tickets Entered Exceeds Number of Tickets Available', 'error')
             return redirect(url_for('event_details', event_id=event.id))
-
+            # customer didn;t book anything and chose 0 for eveything
+            #  = Error  
+            # 0 wasn't picked up by the system, so -1 was chosen as the 0 replacment
         elif booked_student == -1 and booked_postgraduate == -1 and booked_concession == -1:
             flash('No Tickets Were Selected', 'error')
             return redirect(url_for('event_details', event_id=event.id))
-
+            # customer only booked for student, and the rest were 0 tickets remaining    
+            # = SoldOut     
         elif booked_student==event.student and event.concession==0 and event.postgraduate==0:
             event.status = "SoldOut"
             new_s = event.student - booked_student
             Event.query.filter(Event.id==booked_event).update(dict(student= new_s))
             flash(f'Booking Successful for {userid}. Your OrderId is {order}', 'success')
             return redirect(url_for('events'))
-
+            # customer only booked for concession, and the rest were 0 tickets remaining 
+            # = SoldOut
         elif event.student==0 and event.concession==booked_concession and event.postgraduate==0:
             event.status = "SoldOut"
             new_c = event.concession - booked_concession
             Event.query.filter(Event.id==booked_event).update(dict(concession= new_c))
             flash(f'Booking Successful for {userid}. Your OrderId is {order}', 'success')
             return redirect(url_for('events'))
-
+            # customer only booked for postgraduate, and the rest were 0 tickets remaining 
+            # = SoldOut
         elif event.student==0 and event.concession==0 and event.postgraduate==booked_postgraduate:
             event.status = "SoldOut"
             new_p = event.postgraduate - booked_postgraduate
             Event.query.filter(Event.id==booked_event).update(dict(postgraduate= new_p))
             flash(f'Booking Successful for {userid}. Your OrderId is {order}', 'success')
             return redirect(url_for('events'))
-            
+            # customer only booked for postgraduate and concession, and the rest were 0 tickets remaining 
+            # = SoldOut
         elif event.student==0 and event.postgraduate==booked_postgraduate and event.concession==booked_concession:
             event.status = "SoldOut"
             new_p = event.postgraduate - booked_postgraduate
@@ -224,6 +232,8 @@ def book(event_id):
             Event.query.filter(Event.id==booked_event).update(dict(concession= new_c))
             flash(f'Booking Successful for {userid}. Your OrderId is {order}', 'success')
             return redirect(url_for('events'))
+            # customer only booked for postgraduate and student, and the rest were 0 tickets remaining 
+            # = SoldOut
         elif event.postgraduate==booked_postgraduate and event.student==booked_student and event.concession==0:
             event.status = "SoldOut"
             new_p = event.postgraduate - booked_postgraduate
@@ -232,6 +242,8 @@ def book(event_id):
             Event.query.filter(Event.id==booked_event).update(dict(student= new_s))
             flash(f'Booking Successful for {userid}. Your OrderId is {order}', 'success')
             return redirect(url_for('events'))
+            # customer only booked for concession and student, and the rest were 0 tickets remaining 
+            # = SoldOut
         elif event.postgraduate ==0 and event.student==booked_student and event.concession==booked_concession:
             event.status = "SoldOut"
             new_s = event.student - booked_student
