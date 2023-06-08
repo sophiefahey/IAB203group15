@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from flask import url_for
 
 db = SQLAlchemy()
 
@@ -35,6 +36,12 @@ class Event(db.Model):
     def __repr__(self):
         return f"Event(id={self.id}, title='{self.title}', date='{self.date}')"
 
+    @property
+    def image_url(self):
+        if self.image:
+            return url_for('static', filename=f'uploads/{self.image}', _external=True)
+        else:
+            return url_for('static', filename='uploads/default_image.png', _external=True)
 
 class Comment(db.Model):
     __tablename__ = 'comments'

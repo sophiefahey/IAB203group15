@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block css %}
+<!-- Custom CSS -->
+<head>  
+    <link rel="stylesheet" href="{{ url_for('static', filename='/event_creation_update.css') }}">
+</head>
+{% endblock%}
+{% block content %}
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand mr-auto btn btn-outline-primary" href="/">COOK JOB</a>
+            <ul class="navbar-nav flex-row ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/events">Events</a>
+                </li>
+                <!-- History button if logged in -->
+                {% if userid %}
+                <li class="nav-item ">
+                    <a class="nav-link" href="/user_booking_history">History</a>
+                </li>
+                {% endif %}
+                <!-- Register button if not logged in -->
+                {% if not userid %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary ml-3" href="/register">Register </a>
+                </li>
+                {% endif %}
+                <!-- No register button if logged in -->
+                {% if userid %}
+                {% endif %}
+                <!-- Login button if not logged in -->
+                {% if not userid %}
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary ml-3" href="/login">Login</a>
+                </li>
+                {% endif %}
+                <!-- Show username with log out button if logged in -->
+                {% if userid %}
+                <a class="btn btn-outline-primary ml-3" href="/logout">{{ userid }} Logout</a>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Jumbotron -->
+    <div class="jumbotron jumbotron-with-bg-image">
+        <h1><b>Book Event</b></h1>
+        <p>Please enter ticket amount to book </p>
+    </div>
+
+
+    <form action="{{ url_for('book', event_id=event.id) }}" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <h1 class="center">Create Booking for</h1>
+        <h1 class="center">{{event.title}}:</h1>
+        <br>
+        <br>
+        <div class="center">
+            <div class="form-group">
+                <h3>Postgraduate Tickets:</h3>
+                <p>Available Postgraduate Tickets Remaining:</p>
+                <h4>{{ event.postgraduate }}</h4>
+                <br>
+                <label for="event-postgraduate">Select Amount of Postgraduate Tickets:</label>
+                <div class="container center col-md-2">
+                    {{ form.booked_postgraduate(class="form-control center", id="event-postgraduate") }}
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="form-group">
+                <h3>Student Tickets:</h3>
+                <p>Available Student Tickets Remaining:</p>
+                <h4>{{ event.student }}</h4>
+                <br>
+                <label for="booked-student">Select Amount of Student Tickets:</label>
+                <div class="container center col-md-2">
+                    {{ form.booked_student(class="form-control center", id="booked-student") }}
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="form-group">
+                <h3>Concession Tickets:</h3>
+                <p>Available Concession Tickets Remaining:</p>
+                <h4>{{ event.concession }}</h4>
+                <br>
+                <label for="booked-concession">Select Amount of Concession Tickets:</label>
+                <div class="container center col-md-2">
+                    {{ form.booked_concession(class="form-control center", id="event-concession") }}
+                </div>
+                <br>
+            </div>
+            <div class="container center col-md-4">
+                <p>{{ form.submit(class="btn btn-primary") }} </p>
+            </div>
+    </form>
+    </div>
+</body>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+{% endblock%}

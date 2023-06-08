@@ -12,7 +12,7 @@ from flask_bootstrap import Bootstrap
 import random
 
 
-app = Flask(__name__, template_folder='cookjob/template')
+app = Flask(__name__, template_folder='cookjob/templates')
 # Set the upload folder!!!
 app.config['UPLOAD_FOLDER'] = 'cookjob/static/uploads'
 # Specify the allowed extensions for file uploads
@@ -62,7 +62,7 @@ def create_event():
         image_file = request.files.get('image')
         if image_file:
             filename = secure_filename(image_file.filename)
-            image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            image_path = os.path.join(app.root_path, app.config['UPLOAD_FOLDER'], filename)
             image_file.save(image_path)
             event_image = 'uploads/' + filename  # Store the image path in the database
             event = Event(user_id=user_id, title=title, description=description, date=event_date, time=event_time, address=address, image=event_image, postgraduate=postgraduate, student=student, concession=concession, category=category, status=status, states=states)
